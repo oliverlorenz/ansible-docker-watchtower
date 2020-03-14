@@ -1,0 +1,20 @@
+
+- name: check watchtower have to login to registries
+  docker_login: "{{ item }}"
+  with_items: "{{ docker_registry_logins }}"
+  no_log: True
+  when: docker_registry_logins is defined
+
+- name: Re-create a watchtower container
+  docker_container:
+    name: watchtower
+    image: v2tec/watchtower
+    state: started
+    restart_policy: on-failure
+    recreate: yes
+    env: "{{ docker_env_vars }}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /root/.docker/config.json:/config.json
+    command: --interval 15 --cleanup
+  become: yes
