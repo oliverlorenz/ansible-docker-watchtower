@@ -1,0 +1,5 @@
+galaxy_info:
+  role_name: docker-watchtower
+  author: Oliver Lorenz
+  description: installs watchtower as docker container
+  license: MIT
